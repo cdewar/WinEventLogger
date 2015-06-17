@@ -36,7 +36,15 @@ namespace WinEventLogger
 
             System.Diagnostics.EventLog appLog = new System.Diagnostics.EventLog();
             appLog.Source = source;
-            appLog.WriteEntry(message, System.Diagnostics.EventLogEntryType.Information, eventid);
+            try
+            {
+                appLog.WriteEntry(message, System.Diagnostics.EventLogEntryType.Information, eventid);
+            }
+            catch (System.Security.SecurityException)
+            {
+                System.Console.WriteLine("Must be ran as administrator to write to event logs, try running in an elevated command prompt");
+                System.Environment.Exit(1);
+            }
         }
     }
 }
